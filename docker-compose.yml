@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: docker/nginx
+    volumes:
+      - ./backend:/app
+    ports:
+      - "84:80"
+    depends_on:
+      - php-fpm
+    tty: true
+    restart: unless-stopped
+
+  php-fpm:
+    build:
+      context: docker/php-fpm
+    volumes:
+      - ./backend:/app
+    restart: unless-stopped
+    tty: true
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  php-cli:
+    build:
+      context: docker/php-cli
+    volumes:
+      - ./backend:/app
+
+  postgres:
+    image: postgres:16.0-alpine3.17
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - symfony-demo:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: 12345
+      POSTGRES_DB: database
+    ports:
+      - "5431:5432"
+
+volumes:
+  symfony-demo:
+    driver: local
