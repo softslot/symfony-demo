@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Builder\User;
 
+use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserEmail;
 use App\Model\User\Entity\User\UserId;
-use App\Model\User\Entity\User\User;
 use Faker;
 
 class UserBuilder
@@ -32,9 +32,9 @@ class UserBuilder
     }
 
     public function viaEmail(
-        UserEmail $email = null,
-        string    $passwordHash = null,
-        string    $confirmationToken = null
+        ?UserEmail $email = null,
+        ?string $passwordHash = null,
+        ?string $confirmationToken = null
     ): self {
         $clone = clone $this;
         $clone->email = $email ?? new UserEmail($this->faker->email());
@@ -44,7 +44,7 @@ class UserBuilder
         return $clone;
     }
 
-    public function vieNetwork(string $network = null, string $identity = null): self
+    public function vieNetwork(?string $network = null, ?string $identity = null): self
     {
         $clone = clone $this;
         $clone->network = $network ?? $this->faker->text(10);

@@ -20,7 +20,7 @@ readonly class Handler
     public function handle(Command $command): void
     {
         $user = $this->users->findByResetToken($command->token);
-        if ($user === null) {
+        if (null === $user) {
             throw new \DomainException('Incorrect or confirmed token.');
         }
 

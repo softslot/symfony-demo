@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\SingUp;
 
+use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserEmail;
 use App\Model\User\Entity\User\UserId;
-use App\Model\User\Entity\User\User;
 use App\Tests\Unit\BaseUnitTestCase;
 
 class RequestTest extends BaseUnitTestCase

@@ -31,6 +31,6 @@ class UserResetToken
 
     public function isExpiredTo(\DateTimeImmutable $date): bool
     {
-        return $this->expiresAt->diff($date)->invert === 0;
+        return 0 === $this->expiresAt->diff($date)->invert;
     }
 }

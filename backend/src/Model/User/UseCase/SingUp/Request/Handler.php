@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Model\User\UseCase\SingUp\Request;
 
 use App\Model\Flusher;
+use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserEmail;
 use App\Model\User\Entity\User\UserId;
-use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Exception\UserAlreadyExistsException;
+use App\Model\User\Service\ConfirmTokenGenerator;
 use App\Model\User\Service\ConfirmTokenSender;
 use App\Model\User\Service\PasswordHasher;
-use App\Model\User\Service\ConfirmTokenGenerator;
 
 readonly class Handler
 {

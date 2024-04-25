@@ -20,6 +20,8 @@ class User
 
     private UserStatus $status;
 
+    private UserRole $role;
+
     /** @var ArrayCollection<UserNetwork> */
     private ArrayCollection $networks;
 
@@ -31,6 +33,7 @@ class User
         $this->createdAt = $createdAt;
         $this->networks = new ArrayCollection();
         $this->status = UserStatus::New;
+        $this->role = UserRole::User;
     }
 
     public static function signUpByEmail(
@@ -95,12 +98,12 @@ class User
 
     public function isWait(): bool
     {
-        return $this->status === UserStatus::Wait;
+        return UserStatus::Wait === $this->status;
     }
 
     public function isActive(): bool
     {
-        return $this->status === UserStatus::Active;
+        return UserStatus::Active === $this->status;
     }
 
     public function networks(): array
@@ -129,7 +132,7 @@ class User
             throw new \DomainException('User is not active.');
         }
 
-        if ($this->email === null) {
+        if (null === $this->email) {
             throw new \DomainException('Email is not specified.');
         }
 
@@ -147,7 +150,7 @@ class User
 
     public function passwordReset(\DateTimeImmutable $now, string $passwordHash): void
     {
-        if ($this->resetToken === null) {
+        if (null === $this->resetToken) {
             throw new \DomainException('Resetting is not requested.');
         }
 
@@ -156,5 +159,10 @@ class User
         }
 
         $this->passwordHash = $passwordHash;
+    }
+
+    public function changeRole(UserRole $role): void
+    {
+        $this->role = $role;
     }
 }

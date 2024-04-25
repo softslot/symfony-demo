@@ -11,7 +11,7 @@ class ConfirmTest extends BaseUnitTestCase
 {
     public function testSuccess(): void
     {
-        $user = (new UserBuilder())->viaEmail()->build();;
+        $user = (new UserBuilder())->viaEmail()->build();
 
         $user->confirmSignup();
 
@@ -22,7 +22,7 @@ class ConfirmTest extends BaseUnitTestCase
 
     public function testAlreadyConfirmed(): void
     {
-        $user = (new UserBuilder())->viaEmail()->build();;
+        $user = (new UserBuilder())->viaEmail()->build();
 
         $user->confirmSignup();
 

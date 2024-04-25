@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\Network;
 
+use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserId;
 use App\Model\User\Entity\User\UserNetwork;
-use App\Model\User\Entity\User\User;
 use App\Tests\Unit\BaseUnitTestCase;
 
 class AuthTest extends BaseUnitTestCase
@@ -28,24 +28,24 @@ class AuthTest extends BaseUnitTestCase
         self::assertEquals($identity, $first->identity());
     }
 
-//    public function testAlreadyExists(): void
-//    {
-//        $user = User::signUpByNetwork(
-//            Id::next(),
-//            $network = self::faker()->text(20),
-//            $identity = self::faker()->text(20),
-//            new \DateTimeImmutable(),
-//        );
-//
-//        $this->assertTrue(true);
-//
-//        $this->expectExceptionMessage('Network already exists');
-//
-//        $user = User::signUpByNetwork(
-//            Id::next(),
-//            $network = self::faker()->text(20),
-//            $identity = self::faker()->text(20),
-//            new \DateTimeImmutable(),
-//        );
-//    }
+    //    public function testAlreadyExists(): void
+    //    {
+    //        $user = User::signUpByNetwork(
+    //            Id::next(),
+    //            $network = self::faker()->text(20),
+    //            $identity = self::faker()->text(20),
+    //            new \DateTimeImmutable(),
+    //        );
+    //
+    //        $this->assertTrue(true);
+    //
+    //        $this->expectExceptionMessage('Network already exists');
+    //
+    //        $user = User::signUpByNetwork(
+    //            Id::next(),
+    //            $network = self::faker()->text(20),
+    //            $identity = self::faker()->text(20),
+    //            new \DateTimeImmutable(),
+    //        );
+    //    }
 }
