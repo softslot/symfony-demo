@@ -14,3 +14,6 @@ docker-up:
 
 composer-install:
 	docker compose run --rm php-cli composer install
+
+test:
+	docker compose run --rm php-cli ./bin/phpunit
