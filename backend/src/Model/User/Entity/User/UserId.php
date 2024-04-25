@@ -7,7 +7,7 @@ namespace App\Model\User\Entity\User;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
-class Id
+class UserId
 {
     private string $value;
 

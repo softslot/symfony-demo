@@ -6,7 +6,7 @@ namespace App\Model\User\Entity\User;
 
 use Ramsey\Uuid\Uuid;
 
-class Network
+class UserNetwork
 {
     private string $id;
 

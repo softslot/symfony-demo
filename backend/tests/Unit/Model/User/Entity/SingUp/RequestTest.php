@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Model\User\UseCase\SingUp;
+namespace App\Tests\Unit\Model\User\Entity\SingUp;
 
-use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\Id;
+use App\Model\User\Entity\User\UserEmail;
+use App\Model\User\Entity\User\UserId;
 use App\Model\User\Entity\User\User;
 use App\Tests\Unit\BaseUnitTestCase;
 
@@ -14,8 +14,8 @@ class RequestTest extends BaseUnitTestCase
     public function testSuccess(): void
     {
         $user = User::signUpByEmail(
-            $id = Id::next(),
-            $email = new Email(self::faker()->email()),
+            $id = UserId::next(),
+            $email = new UserEmail(self::faker()->email()),
             $passwordHash = self::faker()->text(20),
             $confirmToken = self::faker()->text(20),
             $createdAt = new \DateTimeImmutable(),

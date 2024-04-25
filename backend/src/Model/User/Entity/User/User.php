@@ -8,34 +8,34 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class User
 {
-    private Id $id;
+    private UserId $id;
 
-    private ?Email $email = null;
+    private ?UserEmail $email = null;
 
     private string $passwordHash;
 
     private ?string $confirmationToken = null;
 
-    private ?ResetToken $resetToken = null;
+    private ?UserResetToken $resetToken = null;
 
-    private Status $status;
+    private UserStatus $status;
 
-    /** @var ArrayCollection<Network> */
+    /** @var ArrayCollection<UserNetwork> */
     private ArrayCollection $networks;
 
     private \DateTimeImmutable $createdAt;
 
-    private function __construct(Id $id, \DateTimeImmutable $createdAt)
+    private function __construct(UserId $id, \DateTimeImmutable $createdAt)
     {
         $this->id = $id;
         $this->createdAt = $createdAt;
         $this->networks = new ArrayCollection();
-        $this->status = Status::New;
+        $this->status = UserStatus::New;
     }
 
     public static function signUpByEmail(
-        Id $id,
-        Email $email,
+        UserId $id,
+        UserEmail $email,
         string $passwordHash,
         string $confirmationToken,
         \DateTimeImmutable $createdAt,
@@ -44,20 +44,20 @@ class User
         $user->email = $email;
         $user->passwordHash = $passwordHash;
         $user->confirmationToken = $confirmationToken;
-        $user->status = Status::Wait;
+        $user->status = UserStatus::Wait;
 
         return $user;
     }
 
     public static function signUpByNetwork(
-        Id $id,
+        UserId $id,
         string $network,
         string $identity,
         \DateTimeImmutable $createdAt,
     ): self {
         $user = new self($id, $createdAt);
-        $user->networks->add(new Network($user, $network, $identity));
-        $user->status = Status::Active;
+        $user->networks->add(new UserNetwork($user, $network, $identity));
+        $user->status = UserStatus::Active;
 
         return $user;
     }
@@ -73,12 +73,12 @@ class User
         $this->networks->add($network);
     }
 
-    public function id(): Id
+    public function id(): UserId
     {
         return $this->id;
     }
 
-    public function email(): Email
+    public function email(): UserEmail
     {
         return $this->email;
     }
@@ -95,12 +95,12 @@ class User
 
     public function isWait(): bool
     {
-        return $this->status === Status::Wait;
+        return $this->status === UserStatus::Wait;
     }
 
     public function isActive(): bool
     {
-        return $this->status === Status::Active;
+        return $this->status === UserStatus::Active;
     }
 
     public function networks(): array
@@ -119,12 +119,16 @@ class User
             throw new \DomainException('User already confirmed.');
         }
 
-        $this->status = Status::Active;
+        $this->status = UserStatus::Active;
         $this->confirmationToken = null;
     }
 
-    public function requestPasswordReset(ResetToken $resetToken, \DateTimeImmutable $date): void
+    public function requestPasswordReset(UserResetToken $resetToken, \DateTimeImmutable $date): void
     {
+        if (!$this->isActive()) {
+            throw new \DomainException('User is not active.');
+        }
+
         if ($this->email === null) {
             throw new \DomainException('Email is not specified.');
         }
@@ -136,7 +140,7 @@ class User
         $this->resetToken = $resetToken;
     }
 
-    public function resetToken(): ?ResetToken
+    public function resetToken(): ?UserResetToken
     {
         return $this->resetToken;
     }

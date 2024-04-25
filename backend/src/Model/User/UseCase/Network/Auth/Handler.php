@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Model\User\UseCase\Network\Auth;
 
 use App\Model\Flusher;
-use App\Model\User\Entity\User\Id;
-use App\Model\User\Entity\User\Network;
+use App\Model\User\Entity\User\UserId;
+use App\Model\User\Entity\User\UserNetwork;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Exception\UserAlreadyExistsException;
@@ -29,7 +29,7 @@ readonly class Handler
         }
 
         $user = User::signUpByNetwork(
-            Id::next(),
+            UserId::next(),
             $command->network,
             $command->identity,
             new \DateTimeImmutable()

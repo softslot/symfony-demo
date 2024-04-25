@@ -6,7 +6,7 @@ namespace App\Model\User\Entity\User;
 
 use Webmozart\Assert\Assert;
 
-class Email
+class UserEmail
 {
     private string $value;
 
