@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\Network;
 
+use App\Model\User\Entity\User\Network;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserId;
-use App\Model\User\Entity\User\Network;
 use App\Tests\Unit\BaseUnitTestCase;
 
 class AuthTest extends BaseUnitTestCase

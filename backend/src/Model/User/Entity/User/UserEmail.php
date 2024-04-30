@@ -20,7 +20,7 @@ class UserEmail
             throw new \InvalidArgumentException('Invalid email');
         }
 
-        $this->value= mb_strtolower($value);
+        $this->value = mb_strtolower($value);
     }
 
     public function value(): string
