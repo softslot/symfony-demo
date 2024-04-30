@@ -29,5 +29,7 @@ class RequestTest extends BaseUnitTestCase
         self::assertEquals($passwordHash, $user->passwordHash());
         self::assertEquals($confirmToken, $user->confirmationToken());
         self::assertEquals($createdAt, $user->createdAt());
+
+        self::assertTrue($user->role()->isUser());
     }
 }

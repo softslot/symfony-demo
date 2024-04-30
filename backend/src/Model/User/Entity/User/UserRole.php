@@ -9,13 +9,18 @@ enum UserRole: string
     case User = 'ROLE_USER';
     case Admin = 'ROLE_ADMIN';
 
+    public function isEqual(UserRole $role): bool
+    {
+        return $this === $role;
+    }
+
     public function isUser(): bool
     {
-        return self::User === $this;
+        return $this === self::User;
     }
 
     public function isAdmin(): bool
     {
-        return self::Admin === $this;
+        return $this === self::Admin;
     }
 }

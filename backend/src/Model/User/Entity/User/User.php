@@ -12,7 +12,7 @@ class User
 
     private ?UserEmail $email = null;
 
-    private string $passwordHash;
+    private ?string $passwordHash = null;
 
     private ?string $confirmationToken = null;
 
@@ -22,7 +22,9 @@ class User
 
     private UserRole $role;
 
-    /** @var ArrayCollection<UserNetwork> */
+    /**
+     * @var ArrayCollection<int, UserNetwork>
+     */
     private ArrayCollection $networks;
 
     private \DateTimeImmutable $createdAt;
@@ -73,7 +75,7 @@ class User
             }
         }
 
-        $this->networks->add($network);
+        $this->networks->add(new UserNetwork($this, $network, $identity));
     }
 
     public function id(): UserId
@@ -86,7 +88,7 @@ class User
         return $this->email;
     }
 
-    public function passwordHash(): string
+    public function passwordHash(): ?string
     {
         return $this->passwordHash;
     }
@@ -161,8 +163,17 @@ class User
         $this->passwordHash = $passwordHash;
     }
 
+    public function role(): UserRole
+    {
+        return $this->role;
+    }
+
     public function changeRole(UserRole $role): void
     {
+        if ($this->role->isEqual($role)) {
+            throw new \DomainException('Role is already same.');
+        }
+
         $this->role = $role;
     }
 }
