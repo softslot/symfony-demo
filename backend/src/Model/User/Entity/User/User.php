@@ -16,7 +16,7 @@ class User
     #[ORM\Column(name: 'id', type: 'guid', unique: true)]
     private UserId $id;
 
-    #[ORM\Embedded(class: UserEmail::class, columnPrefix: null)]
+    #[ORM\Embedded(class: UserEmail::class, columnPrefix: false)]
     private ?UserEmail $email = null;
 
     #[ORM\Column(name: 'password_hash', type: 'string', nullable: true)]
