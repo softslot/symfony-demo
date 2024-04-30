@@ -8,6 +8,7 @@ $finder = (new PhpCsFixer\Finder())
 return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony' => true,
+        'yoda_style' => false,
     ])
     ->setCacheFile('var/cache/dev/.php-cs-fixer.cache')
     ->setFinder($finder)
