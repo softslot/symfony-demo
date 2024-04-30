@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Model\User\Entity\Network;
 
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserId;
-use App\Model\User\Entity\User\UserNetwork;
+use App\Model\User\Entity\User\Network;
 use App\Tests\Unit\BaseUnitTestCase;
 
 class AuthTest extends BaseUnitTestCase
@@ -23,7 +23,7 @@ class AuthTest extends BaseUnitTestCase
         self::assertTrue($user->status()->isActive());
 
         self::assertCount(1, $networks = $user->networks());
-        self::assertInstanceOf(UserNetwork::class, $first = reset($networks));
+        self::assertInstanceOf(Network::class, $first = reset($networks));
         self::assertEquals($network, $first->network());
         self::assertEquals($identity, $first->identity());
     }

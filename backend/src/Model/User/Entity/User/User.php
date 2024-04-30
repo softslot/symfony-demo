@@ -5,28 +5,40 @@ declare(strict_types=1);
 namespace App\Model\User\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'user_users')]
 class User
 {
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'guid', unique: true)]
     private UserId $id;
 
+    #[ORM\Embedded(class: UserEmail::class, columnPrefix: null)]
     private ?UserEmail $email = null;
 
+    #[ORM\Column(name: 'password_hash', type: 'string', nullable: true)]
     private ?string $passwordHash = null;
 
+    #[ORM\Column(name: 'confirmation_token', type: 'string', nullable: true)]
     private ?string $confirmationToken = null;
 
+    #[ORM\Embedded(class: UserResetToken::class, columnPrefix: 'reset_token_')]
     private ?UserResetToken $resetToken = null;
 
+    #[ORM\Column(type: 'string', length: 16, nullable: false, enumType: UserStatus::class)]
     private UserStatus $status;
 
+    #[ORM\Column(type: 'string', length: 16, nullable: false, enumType: UserRole::class)]
     private UserRole $role;
 
-    /**
-     * @var ArrayCollection<int, UserNetwork>
-     */
+    /** @var ArrayCollection<int, Network> */
+    #[ORM\OneToMany(targetEntity: Network::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private ArrayCollection $networks;
 
+    #[ORM\Column(name: 'created_at', type: 'date_immutable', nullable: false)]
     private \DateTimeImmutable $createdAt;
 
     private function __construct(UserId $id, \DateTimeImmutable $createdAt)
@@ -61,7 +73,7 @@ class User
         \DateTimeImmutable $createdAt,
     ): self {
         $user = new self($id, $createdAt);
-        $user->networks->add(new UserNetwork($user, $network, $identity));
+        $user->networks->add(new Network($user, $network, $identity));
         $user->status = UserStatus::Active;
 
         return $user;
@@ -75,7 +87,7 @@ class User
             }
         }
 
-        $this->networks->add(new UserNetwork($this, $network, $identity));
+        $this->networks->add(new Network($this, $network, $identity));
     }
 
     public function id(): UserId
@@ -170,5 +182,13 @@ class User
         }
 
         $this->role = $role;
+    }
+
+    #[ORM\PostLoad]
+    private function checkEmbeds(): void
+    {
+        if ($this->resetToken->isEmpty()) {
+            $this->resetToken = null;
+        }
     }
 }
