@@ -20,7 +20,7 @@ class AuthTest extends BaseUnitTestCase
             new \DateTimeImmutable(),
         );
 
-        self::assertTrue($user->isActive());
+        self::assertTrue($user->status()->isActive());
 
         self::assertCount(1, $networks = $user->networks());
         self::assertInstanceOf(UserNetwork::class, $first = reset($networks));

@@ -15,8 +15,8 @@ class ConfirmTest extends BaseUnitTestCase
 
         $user->confirmSignup();
 
-        self::assertTrue($user->isActive());
-        self::assertFalse($user->isWait());
+        self::assertTrue($user->status()->isActive());
+        self::assertFalse($user->status()->isWait());
         self::assertNull($user->confirmationToken());
     }
 

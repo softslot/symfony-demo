@@ -98,16 +98,6 @@ class User
         return $this->confirmationToken;
     }
 
-    public function isWait(): bool
-    {
-        return UserStatus::Wait === $this->status;
-    }
-
-    public function isActive(): bool
-    {
-        return UserStatus::Active === $this->status;
-    }
-
     public function networks(): array
     {
         return $this->networks->toArray();
@@ -120,7 +110,7 @@ class User
 
     public function confirmSignup(): void
     {
-        if ($this->isActive()) {
+        if ($this->status->isActive()) {
             throw new \DomainException('User already confirmed.');
         }
 
@@ -130,7 +120,7 @@ class User
 
     public function requestPasswordReset(UserResetToken $resetToken, \DateTimeImmutable $date): void
     {
-        if (!$this->isActive()) {
+        if (!$this->status->isActive()) {
             throw new \DomainException('User is not active.');
         }
 
@@ -161,6 +151,11 @@ class User
         }
 
         $this->passwordHash = $passwordHash;
+    }
+
+    public function status(): UserStatus
+    {
+        return $this->status;
     }
 
     public function role(): UserRole

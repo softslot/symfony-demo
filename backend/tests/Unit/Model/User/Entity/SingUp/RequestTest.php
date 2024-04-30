@@ -21,8 +21,8 @@ class RequestTest extends BaseUnitTestCase
             $createdAt = new \DateTimeImmutable(),
         );
 
-        self::assertTrue($user->isWait());
-        self::assertFalse($user->isActive());
+        self::assertTrue($user->status()->isWait());
+        self::assertFalse($user->status()->isActive());
 
         self::assertEquals($id, $user->id());
         self::assertEquals($email, $user->email());
