@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'user_network')]
+#[ORM\Table(name: 'user_networks')]
 class Network
 {
     #[ORM\Id]

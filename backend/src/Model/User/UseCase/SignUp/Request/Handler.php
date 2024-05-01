@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Model\User\UseCase\SingUp\Request;
+namespace App\Model\User\UseCase\SignUp\Request;
 
 use App\Model\Flusher;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserEmail;
 use App\Model\User\Entity\User\UserId;
+use App\Model\User\Entity\User\UserName;
 use App\Model\User\Entity\User\UserRepository;
 use App\Model\User\Exception\UserAlreadyExistsException;
 use App\Model\User\Service\ConfirmTokenGenerator;
@@ -38,6 +39,7 @@ readonly class Handler
 
         $user = User::signUpByEmail(
             UserId::next(),
+            new UserName($command->firstName, $command->lastName),
             $email,
             $this->passwordHasher->hash($command->password),
             $token = $this->tokenGenerator->generate(),

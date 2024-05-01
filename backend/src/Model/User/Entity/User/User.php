@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\User\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -15,6 +16,9 @@ class User
     #[ORM\Id]
     #[ORM\Column(name: 'id', type: 'guid', unique: true)]
     private UserId $id;
+
+    #[ORM\Embedded(class: UserName::class)]
+    private UserName $name;
 
     #[ORM\Embedded(class: UserEmail::class, columnPrefix: false)]
     private ?UserEmail $email = null;
@@ -36,14 +40,15 @@ class User
 
     /** @var ArrayCollection<int, Network> */
     #[ORM\OneToMany(targetEntity: Network::class, mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private ArrayCollection $networks;
+    private Collection $networks;
 
     #[ORM\Column(name: 'created_at', type: 'date_immutable', nullable: false)]
     private \DateTimeImmutable $createdAt;
 
-    private function __construct(UserId $id, \DateTimeImmutable $createdAt)
+    private function __construct(UserId $id, UserName $name, \DateTimeImmutable $createdAt)
     {
         $this->id = $id;
+        $this->name = $name;
         $this->createdAt = $createdAt;
         $this->networks = new ArrayCollection();
         $this->status = UserStatus::New;
@@ -52,12 +57,13 @@ class User
 
     public static function signUpByEmail(
         UserId $id,
+        UserName $name,
         UserEmail $email,
         string $passwordHash,
         string $confirmationToken,
         \DateTimeImmutable $createdAt,
     ): self {
-        $user = new self($id, $createdAt);
+        $user = new self($id, $name, $createdAt);
         $user->email = $email;
         $user->passwordHash = $passwordHash;
         $user->confirmationToken = $confirmationToken;
@@ -68,11 +74,12 @@ class User
 
     public static function signUpByNetwork(
         UserId $id,
+        UserName $name,
         string $network,
         string $identity,
         \DateTimeImmutable $createdAt,
     ): self {
-        $user = new self($id, $createdAt);
+        $user = new self($id, $name, $createdAt);
         $user->networks->add(new Network($user, $network, $identity));
         $user->status = UserStatus::Active;
 
@@ -93,6 +100,11 @@ class User
     public function id(): UserId
     {
         return $this->id;
+    }
+
+    public function name(): UserName
+    {
+        return $this->name;
     }
 
     public function email(): UserEmail

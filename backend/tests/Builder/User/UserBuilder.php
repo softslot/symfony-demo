@@ -7,6 +7,7 @@ namespace App\Tests\Builder\User;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserEmail;
 use App\Model\User\Entity\User\UserId;
+use App\Model\User\Entity\User\UserName;
 use Faker;
 
 class UserBuilder
@@ -14,6 +15,7 @@ class UserBuilder
     private UserId $id;
     private \DateTimeImmutable $createdAt;
 
+    private UserName $name;
     private ?UserEmail $email = null;
     private string $passwordHash;
     private ?string $confirmationToken = null;
@@ -32,11 +34,13 @@ class UserBuilder
     }
 
     public function viaEmail(
+        ?UserName $name = null,
         ?UserEmail $email = null,
         ?string $passwordHash = null,
         ?string $confirmationToken = null
     ): self {
         $clone = clone $this;
+        $clone->name = $name ?? new UserName($this->faker->firstName(), $this->faker->lastName());
         $clone->email = $email ?? new UserEmail($this->faker->email());
         $clone->passwordHash = $passwordHash ?? $this->faker->text(10);
         $clone->confirmationToken = $confirmationToken ?? $this->faker->text(10);
@@ -44,9 +48,13 @@ class UserBuilder
         return $clone;
     }
 
-    public function vieNetwork(?string $network = null, ?string $identity = null): self
-    {
+    public function vieNetwork(
+        ?UserName $name = null,
+        ?string $network = null,
+        ?string $identity = null
+    ): self {
         $clone = clone $this;
+        $clone->name = $name ?? new UserName($this->faker->firstName(), $this->faker->lastName());
         $clone->network = $network ?? $this->faker->text(10);
         $clone->identity = $identity ?? $this->faker->text(10);
 
@@ -66,6 +74,7 @@ class UserBuilder
         if ($this->email) {
             $user = User::signUpByEmail(
                 $this->id,
+                $this->name,
                 $this->email,
                 $this->passwordHash,
                 $this->confirmationToken,
@@ -81,6 +90,7 @@ class UserBuilder
 
         return User::signUpByNetwork(
             $this->id,
+            $this->name,
             $this->network,
             $this->identity,
             $this->createdAt

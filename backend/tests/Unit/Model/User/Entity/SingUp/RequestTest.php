@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Model\User\Entity\SingUp;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserEmail;
 use App\Model\User\Entity\User\UserId;
+use App\Model\User\Entity\User\UserName;
 use App\Tests\Unit\BaseUnitTestCase;
 
 class RequestTest extends BaseUnitTestCase
@@ -15,6 +16,7 @@ class RequestTest extends BaseUnitTestCase
     {
         $user = User::signUpByEmail(
             $id = UserId::next(),
+            $name = new UserName(self::faker()->firstName(), self::faker()->lastName()),
             $email = new UserEmail(self::faker()->email()),
             $passwordHash = self::faker()->text(20),
             $confirmToken = self::faker()->text(20),
@@ -25,6 +27,7 @@ class RequestTest extends BaseUnitTestCase
         self::assertFalse($user->status()->isActive());
 
         self::assertEquals($id, $user->id());
+        self::assertEquals($name->full(), $user->name()->full());
         self::assertEquals($email, $user->email());
         self::assertEquals($passwordHash, $user->passwordHash());
         self::assertEquals($confirmToken, $user->confirmationToken());

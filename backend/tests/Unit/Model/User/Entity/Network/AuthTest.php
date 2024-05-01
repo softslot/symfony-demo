@@ -7,6 +7,7 @@ namespace App\Tests\Unit\Model\User\Entity\Network;
 use App\Model\User\Entity\User\Network;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Entity\User\UserId;
+use App\Model\User\Entity\User\UserName;
 use App\Tests\Unit\BaseUnitTestCase;
 
 class AuthTest extends BaseUnitTestCase
@@ -15,6 +16,7 @@ class AuthTest extends BaseUnitTestCase
     {
         $user = User::signUpByNetwork(
             UserId::next(),
+            $name = new UserName(self::faker()->firstName(), self::faker()->lastName()),
             $network = self::faker()->text(20),
             $identity = self::faker()->text(20),
             new \DateTimeImmutable(),
