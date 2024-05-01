@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
 #[ORM\Embeddable]
-class UserResetToken
+readonly class UserResetToken
 {
     #[ORM\Column(type: 'string', unique: true, nullable: true)]
     private string $token;
