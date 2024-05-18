@@ -22,3 +22,13 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Model\User\Service\ConfirmTokenSender:
+      $from: '%env(MAILER_FROM_EMAIL)%'
+
+    App\Model\User\Service\ResetTokenSender:
+      $from: '%env(MAILER_FROM_EMAIL)%'
+
+    App\Model\User\Service\ResetTokenGenerator:
+      factory: 'App\Container\Model\User\Service\ResetTokenGeneratorFactory::create'
+      arguments: ['PT1H']

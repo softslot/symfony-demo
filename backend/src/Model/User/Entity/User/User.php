@@ -13,8 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'user_users')]
 class User
 {
-    #[ORM\Id]
-    #[ORM\Column(name: 'id', type: 'guid', unique: true)]
+    #[ORM\Embedded(class: UserId::class, columnPrefix: false)]
     private UserId $id;
 
     #[ORM\Embedded(class: UserName::class)]
@@ -166,7 +165,7 @@ class User
 
     public function passwordReset(\DateTimeImmutable $now, string $passwordHash): void
     {
-        if (null === $this->resetToken) {
+        if ($this->resetToken === null) {
             throw new \DomainException('Resetting is not requested.');
         }
 

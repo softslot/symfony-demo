@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\Model\User\Entity\User;
 
+use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
+#[ORM\Embeddable]
 readonly class UserId
 {
+    #[ORM\Id]
+    #[ORM\Column(name: 'id', type: 'guid', unique: true)]
     private string $value;
 
     public function __construct(string $value)

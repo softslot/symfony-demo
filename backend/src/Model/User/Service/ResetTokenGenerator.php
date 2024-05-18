@@ -10,7 +10,7 @@ use Ramsey\Uuid\Uuid;
 readonly class ResetTokenGenerator
 {
     public function __construct(
-        private \DateInterval $interval
+        private \DateInterval $interval,
     ) {
     }
 
@@ -18,7 +18,7 @@ readonly class ResetTokenGenerator
     {
         return new UserResetToken(
             Uuid::uuid4()->toString(),
-            (new \DateTimeImmutable())->add($this->interval)
+            (new \DateTimeImmutable())->add($this->interval),
         );
     }
 }

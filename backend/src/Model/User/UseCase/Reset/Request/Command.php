@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Model\User\UseCase\Reset\Request;
 
-readonly class Command
+use Symfony\Component\Validator\Constraints as Assert;
+
+class Command
 {
     public function __construct(
-        public string $email,
+        #[Assert\NotBlank]
+        #[Assert\Email]
+        public ?string $email = null,
     ) {
     }
 }

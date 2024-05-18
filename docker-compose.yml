@@ -42,6 +42,11 @@ services:
     ports:
       - "5431:5432"
 
+  mailer:
+    image: mailhog/mailhog
+    ports:
+      - "8082:8025"
+
 volumes:
   symfony-demo:
     driver: local

@@ -14,6 +14,7 @@ use App\Model\User\Exception\UserAlreadyExistsException;
 use App\Model\User\Service\ConfirmTokenGenerator;
 use App\Model\User\Service\ConfirmTokenSender;
 use App\Model\User\Service\PasswordHasher;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 readonly class Handler
 {
@@ -23,6 +24,7 @@ readonly class Handler
         private ConfirmTokenGenerator $tokenGenerator,
         private ConfirmTokenSender $tokenSender,
         private Flusher $flusher,
+        private ValidatorInterface $validator,
     ) {
     }
 
@@ -31,6 +33,8 @@ readonly class Handler
      */
     public function handle(Command $command): void
     {
+        $violations = $this->validator->validate($command);
+
         $email = new UserEmail($command->email);
 
         if ($this->users->hasByEmail($email)) {

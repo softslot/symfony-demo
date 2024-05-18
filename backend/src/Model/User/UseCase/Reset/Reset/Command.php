@@ -6,9 +6,10 @@ namespace App\Model\User\UseCase\Reset\Reset;
 
 readonly class Command
 {
+    public string $password;
+
     public function __construct(
         public string $token,
-        public string $password,
     ) {
     }
 }
